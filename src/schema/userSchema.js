@@ -1,0 +1,134 @@
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+
+const refreshTokenSchema = new mongoose.Schema(
+  {
+    tri: {
+      type: String,
+      required: true,
+    },
+
+    token: {
+      type: String,
+      required: true,
+    },
+
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+
+    expiresAt: {
+      type: Date,
+      required: true,
+    },
+
+    deviceInfo: {
+      type: String,
+      default: null,
+    },
+
+    revoked: {
+      type: Boolean,
+      default: false,
+    },
+
+    replaceBy: {
+      type: String,
+      default: null,
+    },
+  },
+  { _id: false }
+);
+
+const userSchema = new mongoose.Schema(
+  {
+    fullName: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+
+    userName: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      unique: true,
+      required: true,
+    },
+
+    email: {
+      type: String,
+      unique: true,
+      lowercase: true,
+      trim: true,
+      match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please provide a valid email address"],
+      required: true,
+    },
+
+    password: {
+      type: String,
+      minlength: [6, "Password must be at least 6 characters"],
+      required: true,
+    },
+
+    profilePicture: {
+      type: String,
+      default:
+        "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
+    },
+
+    role: {
+      type: String,
+      enum: ["User", "Admin"],
+      default: "User",
+    },
+
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+
+    mobileNumber: {
+      type: String,
+      unique: true,
+      sparse: true,
+      trim: true,
+      match: [/^[6-9]\d{9}$/, "Please provide a valid 10-digit Indian mobile number"],
+    },
+
+    refreshTokens: {
+      type: [refreshTokenSchema],
+      default: [],
+    },
+
+    displayName: {
+      type: String,
+      default: function () {
+        return `${this.fullName} (@${this.userName})`;
+      },
+    },
+
+    // OTP fields
+    otpHash: { type: String },
+    otpExpiresAt: { type: Date },
+    otpAttempts: { type: Number, default: 0 },
+    otpSentAt: { type: Date },
+    isOtpVerified: { type: Boolean, default: false },
+  },
+  { timestamps: true }
+);
+
+userSchema.pre("save", async function () {
+  // If password not changed, do nothing
+  if (!this.isModified("password")) return;
+
+  this.password = await bcrypt.hash(this.password, 10);
+});
+
+userSchema.methods.comparePassword = async function (enteredPassword) {
+  return bcrypt.compare(enteredPassword, this.password);
+};
+
+const User = mongoose.model("User", userSchema);
+export default User;

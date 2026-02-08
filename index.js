@@ -4,6 +4,7 @@ import serverConfig from "./src/config/serverConfig.js";
 import { clearExpiredTempUsers } from "./src/corn/clearTempUsers.js";
 import router from "./src/routes/apiRoutes.js";
 import cookieParser from "cookie-parser";
+import cors from "cors"
 // import bodyParser from ""
 
 
@@ -15,6 +16,11 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.text());
 
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}));
 
 
 app.get('/ping', (req, res) => {

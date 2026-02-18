@@ -25,3 +25,7 @@ export const updateUser = async (id, updateData) => {
   }
   return user;
 };
+
+export const getAllUserRepository = async (userDetails) => {
+  return await User.find().select("-password");
+}

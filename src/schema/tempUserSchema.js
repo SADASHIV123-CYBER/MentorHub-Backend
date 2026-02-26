@@ -39,8 +39,8 @@ const TempUserSchema = new mongoose.Schema({
 
   role: {
     type: String,
-    enum: ["User", "Admin"],
-    default: "User",
+    enum: ["Student", "Admin", "Mentor"],
+    default: "Student",
   },
 
   isVerified: {

@@ -4,6 +4,7 @@ import authRouter from "./auth.js";
 import passwordRouter from "./passwordRoutes.js"
 import verifyRouter from "./verify.js";
 import adminRouter from "./adminRoutes.js";
+import mentorRouter from "./mentorProfileRoutes.js"
 
 const router = express.Router();
 
@@ -11,6 +12,7 @@ router.use('/user', userRouter);
 router.use('/auth', authRouter);
 router.use('/reset', passwordRouter);
 router.use('/verify', verifyRouter);
-router.use('/admin', adminRouter)
+router.use('/admin', adminRouter);
+router.use('/mentor', mentorRouter)
 
 export default router

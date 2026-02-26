@@ -69,3 +69,23 @@ export async function isAdmin(req, res, next) {
 }
 
 
+export async function isMentor(req, res, next) {
+  try {
+    const loggedInUser = req.user;
+
+    if (!loggedInUser) {
+      return errorResponce(res, new UnauthorisedError("User not logged in"));
+    }
+
+    if (loggedInUser.role === "Mentor") {
+      return next();
+    }
+
+    return errorResponce(
+      res,
+      new UnauthorisedError("Only mentors can access this resource")
+    );
+  } catch (error) {
+    return errorResponce(res, new InternalServerError());
+  }
+}

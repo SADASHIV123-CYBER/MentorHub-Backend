@@ -113,9 +113,7 @@ export const verifyOtp = withErrorHandling(async (email, otp) => {
   };
 });
 
-/**
- * RESEND OTP
- */
+
 export const resendOtp = withErrorHandling(async (email) => {
   const existingTemp = await findTempUser({ email });
   if (!existingTemp) {

@@ -39,6 +39,11 @@ export const createMentorProfileService = withErrorHandling(
       skills,
       experience,
       pricePerSession,
+      languages,
+      availability,
+      rating,
+      totalReviews,
+      totalSessions
     });
   }
 );

@@ -7,6 +7,7 @@ const mentorProfileSchema = new mongoose.Schema(
       ref: "User",
       required: true,
       unique: true,
+      index: true
     },
 
     headline: {
@@ -23,6 +24,12 @@ const mentorProfileSchema = new mongoose.Schema(
     skills: {
       type: [String],
       default: [],
+      index: true
+    },
+
+    experience: {
+      type: Number,
+      default: 0,
     },
 
     pricePerSession: {
@@ -30,17 +37,29 @@ const mentorProfileSchema = new mongoose.Schema(
       default: 0,
     },
 
+    languages: {
+      type: [String],
+      default: ["English"],
+    },
+
+    availability: [
+      {
+        day: String,
+        slots: [String]
+      }
+    ],
+
     rating: {
       type: Number,
       default: 0,
     },
 
-    totalSessions: {
+    totalReviews: {
       type: Number,
-      default: 0,
+      default: 0
     },
 
-    experience: {
+    totalSessions: {
       type: Number,
       default: 0
     },

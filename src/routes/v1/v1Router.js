@@ -5,6 +5,7 @@ import passwordRouter from "./passwordRoutes.js"
 import verifyRouter from "./verify.js";
 import adminRouter from "./adminRoutes.js";
 import mentorRouter from "./mentorProfileRoutes.js"
+import studentRouter from "./studentProfileRoutes.js";
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.use('/reset', passwordRouter);
 router.use('/verify', verifyRouter);
 router.use('/admin', adminRouter);
 router.use('/mentor', mentorRouter)
+router.use('/student', studentRouter)
 
 export default router
